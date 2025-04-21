@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intro</title>
+    <title>Document</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+        .list{
+            list-style-type: armenian;
+        }
+    </style>
 </head>
 <body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // JSX
+        import List from './components/List/List.jsx';
+
+        const domContainer = document.querySelector('#root');
+        const root = ReactDOM.createRoot(domContainer);
+
+        const heading_1 = <h1>Hello, world</h1>;
+        const heading_2 = <h2>Description</h2>;
+
+        const animals = [`cat`, `dog`, `lion`];
+        const humans = [`Jack`, `Taras`, `Olena`];
+        const books = [`Book 1`, `Book 2`, `Book 3`];
+
+        root.render(<React.Fragment>
+            {heading_1}
+            {heading_2}
+        
+            <List arr={animals} color={`red`}  />
+            <List arr={humans} color={`blue`}  />
+            <List arr={[10, 20, 30]}  />
+            <List />
+        </React.Fragment>);
+    </script>
     
 </body>
 </html>
