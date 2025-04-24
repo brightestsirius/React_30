@@ -1,13 +1,15 @@
-const animals = [
-  "lion",
-  "elephant",
-  "giraffe",
-  "zebra",
-  "tiger",
-  "panda"
-];
+const ANIMALS = ["lion", "elephant", "giraffe", "zebra", "tiger", "panda"];
 
-const todos = [
+const USER = {
+  id: 1,
+  name: "Leanne Graham",
+  username: "Bret",
+  email: "Sincere@april.biz",
+  phone: "1-770-736-8031 x56442",
+  website: "hildegard.org"
+};
+
+const TODOS = [
   {
     userId: 1,
     id: 1,
@@ -34,4 +36,4 @@ const todos = [
   },
 ];
 
-export { animals, todos };
+export { ANIMALS, USER, TODOS };

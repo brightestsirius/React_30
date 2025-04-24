@@ -2,31 +2,35 @@ import React, { useState, useEffect } from "react";
 import { getRandomHexColor } from "../../utils";
 
 export default function List({ list: propsList = [] }) {
-  console.log(`🔄 List rerender`);
+  console.log(`🔄 List render`);
 
   const [color, setColor] = useState();
   const [list, setList] = useState(structuredClone(propsList));
-  const [intervalId, setIntervalId] = useState();
+  const [intId, setIntId] = useState();
 
   useEffect(() => {
     console.log(`🟢 in componentDidMount`);
 
-    const removeIntlId = setInterval(() => {
+    // setTimeout(() => {
+    //   setList([...list, `OLEG`]);
+    // }, 1000);
+
+    const removeIntId = setInterval(() => {
       console.log(`in interval`);
       setList((prevState) => prevState.slice(0, -1));
     }, 1000);
-    setIntervalId(removeIntlId);
+    setIntId(removeIntId);
 
     return () => {
       console.log(`🔴 in componentWillUnmount`);
-      clearInterval(removeIntlId);
+      clearInterval(removeIntId);
     };
   }, []);
 
   useEffect(() => {
     console.log(`🟡 in componentDidUpdate for list`, list);
     if (list.length <= 3) setColor(`crimson`);
-    if (!list.length) clearInterval(intervalId);
+    if (list.length === 0) clearInterval(intId);
   }, [list]);
 
   useEffect(() => {

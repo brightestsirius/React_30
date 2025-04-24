@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import List from "./components/List/List";
 
-import { animals } from "./mockData";
+import { ANIMALS } from "./mockData";
 
 export default function App() {
   const [showList, setShowList] = useState(true);
-
-  const handleListRemove = () => setShowList(!showList);
-
+  const handleShowList = () => setShowList(!showList);
   return (
     <>
-      <button onClick={handleListRemove}>Remove List Component</button>
-      {showList && <List list={animals} />}
+      <button onClick={handleShowList}>Remove List Component</button>
+      {showList && <List list={ANIMALS} />}
     </>
   );
 }
