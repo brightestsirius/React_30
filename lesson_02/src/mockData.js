@@ -1,3 +1,6 @@
+// structuredClone
+// 🔄🟢🟡🔴
+
 const ANIMALS = ["lion", "elephant", "giraffe", "zebra", "tiger", "panda"];
 
 const USER = {
@@ -6,7 +9,7 @@ const USER = {
   username: "Bret",
   email: "Sincere@april.biz",
   phone: "1-770-736-8031 x56442",
-  website: "hildegard.org"
+  website: "hildegard.org",
 };
 
 const TODOS = [
