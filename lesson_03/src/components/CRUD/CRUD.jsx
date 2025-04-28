@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.sass";
-import { handleClick } from "./../../utils";
+import { handleEvent } from "./../../utils";
+
+// Read
+// Delete
+
+// hook
+// useFetch, axios – fetching
 
 const API = `https://jsonplaceholder.typicode.com/todos`;
 
 export default function CRUD() {
   const [list, setList] = useState([]);
-  const [listSorted, setListSorted] = useState([]);
-
-  const formTitleRef = useRef();
-  const formCompletedRef = useRef();
 
   const getList = async () => {
     try {
@@ -31,52 +33,32 @@ export default function CRUD() {
 
   const handleItemDelete = async (id) => {
     try {
-      await fetch(`${API}/${id}`, { method: `DELETE` });
+      await fetch(API + `/${id}`, { method: `DELETE` });
       setList((prevState) => prevState.filter((item) => item.id !== id));
+      // getList(); – real API insted setList
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleItemComplete = async (item) => {
+  const handleItemCompleted = async (item) => {
     try {
-      const request = await fetch(`${API}/${item.id}`, {
+      const request = await fetch(API + `/${item.id}`, {
           method: `PATCH`,
           body: JSON.stringify({ completed: !item.completed }),
-          headers: { "Content-type": "application/json" },
-        }),
-        response = await request.json();
-
-      setList((prevState) =>
-        prevState.map((el) => {
-          if (el.id === response.id) el = response;
-          return el;
-        })
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const newTodo = {
-      title: formTitleRef.current.value,
-      completed: formCompletedRef.current.checked,
-    };
-
-    try {
-      const request = await fetch(API, {
-          method: `POST`,
-          body: JSON.stringify(newTodo),
           headers: {
             "Content-type": "application/json",
           },
         }),
         response = await request.json();
 
-      setList((prevState) => [...prevState, response]);
+      setList((prevState) =>
+        prevState.map((element) => {
+          if (element.id === response.id) element = response;
+          return element;
+        })
+      );
+      // getList(); – real API insted setList
     } catch (err) {
       console.log(err);
     }
@@ -87,46 +69,25 @@ export default function CRUD() {
   }, []);
 
   useEffect(() => {
-    list.length &&
-      setListSorted(
-        structuredClone(list).sort((a, b) => a.completed - b.completed)
-      );
+    console.log(`list`, list);
   }, [list]);
 
-  return (
-    <>
-      <form className="form" onSubmit={handleFormSubmit}>
-        <label>
-          Title:{" "}
-          <input type="text" ref={formTitleRef} defaultValue={`New todo`} />
-        </label>
-        <label>
-          Completed:{" "}
-          <input type="checkbox" ref={formCompletedRef} defaultChecked={true} />
-        </label>
-        <button>Add todo</button>
-      </form>
-
-      {list.length ? (
-        <ul>
-          {listSorted.map((item) => (
-            <li
-              key={item.id}
-              className={getItemClassName(item)}
-              onClick={() => handleItemComplete(item)}
-            >
-              {item.title}{" "}
-              <button
-                onClick={(event) =>
-                  handleClick(event, handleItemDelete, item.id)
-                }
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </>
-  );
+  return list.length ? (
+    <ul>
+      {list.map((item) => (
+        <li
+          key={item.id}
+          className={getItemClassName(item)}
+          onClick={() => handleItemCompleted(item)}
+        >
+          {item.title}{" "}
+          <button
+            onClick={(event) => handleEvent(event, handleItemDelete, [item.id])}
+          >
+            Delete
+          </button>
+        </li>
+      ))}
+    </ul>
+  ) : null;
 }

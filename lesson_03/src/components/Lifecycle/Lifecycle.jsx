@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { USER } from "../../mockData";
+import { USER } from "./../../mockData";
 import { getRandomHexColor } from "../../utils";
+
+// 🔄🟢🟡🔴💌
 
 export default function Lifecycle() {
   const [user, setUser] = useState(USER);
   const [color, setColor] = useState();
+
   const [isColoring, setIsColoring] = useState(false);
 
-  console.log(`🔄 re-render`);
-
-  const handleColoring = () => setIsColoring((prevState) => !prevState);
+  const handleStartColoring = () => {
+    setIsColoring((prevState) => !prevState);
+  };
 
   useEffect(() => {
-    console.log(`🟡 in componentDidUpdate for isColoring`, isColoring);
     let intId;
     if (isColoring) {
       intId = setInterval(() => {
@@ -23,11 +25,24 @@ export default function Lifecycle() {
 
     return () => {
       clearInterval(intId);
-      console.log(`🔄🔴 re-render and componentWillUnmount for isColoring`);
     };
   }, [isColoring]);
 
-  return Object.keys(USER).length ? (
+  useEffect(() => {
+    console.log(
+      `💌 in componentDidUpdate WebSocket START for user.email`,
+      user.email
+    );
+
+    return () => {
+      console.log(
+        `🔴💌 componentWillUnmount – WebSocket CLOSE for user.email`,
+        user.email
+      );
+    };
+  }, [user.email]);
+
+  return Object.keys(user).length ? (
     <>
       <ul style={{ color }}>
         {Object.entries(user)
@@ -38,7 +53,7 @@ export default function Lifecycle() {
             </li>
           ))}
       </ul>
-      <button onClick={handleColoring}>Toggle coloring</button>
+      <button onClick={handleStartColoring}>Toggle coloring</button>
     </>
   ) : null;
 }

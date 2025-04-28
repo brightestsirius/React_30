@@ -5,9 +5,9 @@ const getRandomHexColor = () => {
   return `#${paddedHexString}`;
 };
 
-const handleClick = (event, cb, value) => {
+const handleEvent = (event, cb, props) => {
   event.stopPropagation();
-  cb(value);
+  cb(...props);
 };
 
-export { getRandomHexColor, handleClick };
+export { getRandomHexColor, handleEvent };
