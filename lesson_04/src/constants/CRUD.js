@@ -1,0 +1,10 @@
+const DEFAULT_TODO = {
+  title: `New todo`,
+  completed: true,
+};
+
+const FILTER_ALL = `FILTER_ALL`;
+const FILTER_COMPLETED = `FILTER_COMPLETED`;
+const FILTER_PROGRESS = `FILTER_PROGRESS`;
+
+export { DEFAULT_TODO, FILTER_ALL, FILTER_COMPLETED, FILTER_PROGRESS };

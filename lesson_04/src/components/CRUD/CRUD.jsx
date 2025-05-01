@@ -1,85 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./style.sass";
-import { handleEvent } from "./../../utils";
 
-const API = `https://jsonplaceholder.typicode.com/todos`;
+import Form from "./Form/Form";
+import Statistics from "./Statistics/Statistics";
+import Filter from "./Filter/Filter";
+import List from "./List/List";
+
+import service from "../../services/todos";
 
 export default function CRUD() {
   const [list, setList] = useState([]);
+  const [filter, setFilter] = useState();
 
   const getList = async () => {
     try {
-      const request = await fetch(API),
-        response = await request.json();
-
-      setList(response.slice(0, 10));
+      const response = await service.get();
+      setList(response);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const getItemClassName = (item) => {
-    const classes = [`list__item`];
-    item.completed && classes.push(`list__item--completed`);
-
-    return classes.join(` `);
-  };
-
-  const handleItemDelete = async (id) => {
-    try {
-      await fetch(API + `/${id}`, { method: `DELETE` });
-      setList((prevState) => prevState.filter((item) => item.id !== id));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleItemCompleted = async (item) => {
-    try {
-      const request = await fetch(API + `/${item.id}`, {
-          method: `PATCH`,
-          body: JSON.stringify({ completed: !item.completed }),
-          headers: {
-            "Content-type": "application/json",
-          },
-        }),
-        response = await request.json();
-
-      setList((prevState) =>
-        prevState.map((element) => {
-          if (element.id === response.id) element = response;
-          return element;
-        })
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  useEffect(() => {
-    console.log(`list`, list);
-  }, [list]);
-
-  return list.length ? (
-    <ul>
-      {list.map((item) => (
-        <li
-          key={item.id}
-          className={getItemClassName(item)}
-          onClick={() => handleItemCompleted(item)}
-        >
-          {item.title}{" "}
-          <button
-            onClick={(event) => handleEvent(event, handleItemDelete, [item.id])}
-          >
-            Delete
-          </button>
-        </li>
-      ))}
-    </ul>
-  ) : null;
+  return (
+    <>
+      <Form getList={getList} />
+      <Statistics list={list} />
+      <Filter liftingFilter={setFilter} />
+      <List list={list} getList={getList} filter={filter} />
+    </>
+  );
 }
