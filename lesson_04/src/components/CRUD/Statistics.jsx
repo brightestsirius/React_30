@@ -1,7 +1,7 @@
 import React from "react";
 
-export default function Statistics({ list = [] }) {
-  return (
+export default function Statistics({ list }) {
+  return list.length ? (
     <div>
       Statistics:
       <ul>
@@ -10,5 +10,5 @@ export default function Statistics({ list = [] }) {
         <li>In progress: {list.filter((item) => !item.completed).length}</li>
       </ul>
     </div>
-  );
+  ) : null;
 }
