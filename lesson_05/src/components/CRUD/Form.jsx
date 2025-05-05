@@ -56,4 +56,4 @@ export default memo(function Form({ getList }) {
       <button>Add todo item</button>
     </form>
   );
-});
+})

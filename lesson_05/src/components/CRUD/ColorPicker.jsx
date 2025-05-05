@@ -1,12 +1,9 @@
-import React, { useEffect, memo } from "react";
-import { TODOS_DEFAULT_COLOR } from "../../constants/todos";
-
-import useLocalStorage from "./../../hooks/useLocalStorage";
+import React, { useState, useEffect, memo } from "react";
 
 export default memo(function ColorPicker({ liftingColor }) {
   console.log(`🔄 in ColorPicker`);
-
-  const [color, setColor] = useLocalStorage(`color`, TODOS_DEFAULT_COLOR);
+  
+  const [color, setColor] = useState(`#673ab7`);
 
   const handleSetColor = (e) => setColor(e.target.value);
 

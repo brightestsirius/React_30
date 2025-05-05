@@ -1,37 +1,58 @@
-import React, { useCallback, memo } from "react";
+import React, { useEffect, useState } from "react";
 
 import ListItem from "./ListItem";
 
 import service from "../../services/mockapi";
 
-import useTodosFilter from "./../../hooks/useTodosFilter";
+import {
+  TODOS_FILTER_COMPLETED,
+  TODOS_FILTER_PROGRESS,
+} from "../../constants/todos";
 
-export default memo(function List({ list, getList, filter, color }) {
+export default function List({ list, getList, filter, color }) {
   console.log(`🔄 in List`);
 
-  const { filteredList } = useTodosFilter(list, filter);
+  const [filteredList, setFilteredList] = useState(list);
 
-  const handleItemDelete = useCallback(async (id) => {
+  useEffect(() => {
+    switch (filter) {
+      case TODOS_FILTER_COMPLETED:
+        setFilteredList(list.filter((item) => item.completed));
+        break;
+      case TODOS_FILTER_PROGRESS:
+        setFilteredList(list.filter((item) => !item.completed));
+        break;
+      default:
+        setFilteredList(list);
+        break;
+    }
+  }, [list, filter]);
+
+  const sortedList = structuredClone(filteredList).sort(
+    (a, b) => a.completed - b.completed
+  );
+
+  const handleItemDelete = async (id) => {
     try {
       await service.delete(`todos`, id);
       getList();
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  };
 
-  const handleItemCompleted = useCallback(async (item) => {
+  const handleItemCompleted = async (item) => {
     try {
       await service.put(`todos`, item.id, { completed: !item.completed });
       getList();
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  };
 
-  return filteredList.length ? (
+  return sortedList.length ? (
     <ul>
-      {filteredList.map((item) => (
+      {sortedList.map((item) => (
         <ListItem
           key={item.id}
           item={item}
@@ -42,4 +63,4 @@ export default memo(function List({ list, getList, filter, color }) {
       ))}
     </ul>
   ) : null;
-});
+}

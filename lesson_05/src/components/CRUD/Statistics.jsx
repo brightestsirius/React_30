@@ -1,10 +1,10 @@
-import React, { memo } from "react";
+import React, {memo} from "react";
 
-export default memo(function Statistics({ list }) {
-  console.log(`🔄 in Statistics`);
+export default memo(function Statistics({ list, borderStyle }) {
+  console.log(`🔄🟢 in Statistics`);
 
   return list.length ? (
-    <div>
+    <div style={borderStyle}>
       Statistics:
       <ul>
         <li>All: {list.length}</li>
@@ -13,4 +13,4 @@ export default memo(function Statistics({ list }) {
       </ul>
     </div>
   ) : null;
-});
+})

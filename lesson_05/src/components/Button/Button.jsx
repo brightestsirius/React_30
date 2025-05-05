@@ -1,5 +1,5 @@
-import React, {memo} from "react";
+import React from "react";
 
-export default memo(function Button({ title = ``, handleClick }) {
+export default function Button({ title = ``, handleClick }) {
   return <button onClick={handleClick}>{title}</button>;
-})
+}
