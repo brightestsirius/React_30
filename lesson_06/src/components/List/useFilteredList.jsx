@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
+
 import {
   TODOS_FILTER_COMPLETED,
   TODOS_FILTER_PROGRESS,
-} from "../constants/todos";
+} from "../../constants/todos";
 
 export default function useFilteredList(list, filter) {
-  const [filteredList, setFilteredList] = useState(structuredClone(list));
+  const [filteredList, setFileterdList] = useState([]);
 
   useEffect(() => {
     switch (filter) {
       case TODOS_FILTER_COMPLETED:
-        setFilteredList(list.filter((item) => item.completed));
+        setFileterdList(list.filter((item) => item.completed));
         break;
       case TODOS_FILTER_PROGRESS:
-        setFilteredList(list.filter((item) => !item.completed));
+        setFileterdList(list.filter((item) => !item.completed));
         break;
       default:
-        setFilteredList(list);
+        setFileterdList(list);
     }
   }, [list, filter]);
 

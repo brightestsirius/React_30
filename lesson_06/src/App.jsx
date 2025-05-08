@@ -1,20 +1,30 @@
 import React from "react";
-import List from "./components/List/List";
+
 import Filter from "./components/Filter/Filter";
+import List from "./components/List/List";
+import Statistics from "./components/Statistics/Statistics";
+import ColorPicker from "./components/ColorPicker/ColorPicker";
 
-import TodosContext from "./contexts/todosContext";
+import useFilter from "./components/Filter/useFilter";
+import useList from "./components/List/useList";
+import useColorPicker from "./components/ColorPicker/useColorPicker";
 
-import useList from "./hooks/useList";
-import useFilter from "./hooks/useFilter";
+import AppContext from "./contexts/AppContext";
+import ListFilterContext from "./contexts/ListFilterContext";
 
 export default function App() {
-  const list = useList();
-  const filter = useFilter();
+  const list = useList(`todos`); // {list}
+  const filter = useFilter(); // {filter, handleSetFilter}
+  const color = useColorPicker(); // {color, handleSetColor}
 
   return (
-    <TodosContext.Provider value={{ ...list, ...filter }}>
-      <Filter />
-      <List />
-    </TodosContext.Provider>
+    <AppContext.Provider value={{ list, color }}>
+      <Statistics />
+      <ColorPicker />
+      <ListFilterContext.Provider value={{ filter }}>
+        <Filter />
+        <List />
+      </ListFilterContext.Provider>
+    </AppContext.Provider>
   );
 }

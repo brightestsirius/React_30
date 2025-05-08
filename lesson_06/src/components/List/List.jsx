@@ -1,25 +1,27 @@
 import React, { useContext } from "react";
 import "./style.sass";
 
-import TodosContext from "../../contexts/todosContext";
-import useFilteredList from "./../../hooks/useFilteredList";
+import AppContext from "../../contexts/AppContext";
+import ListFilterContext from "../../contexts/ListFilterContext";
+
+import useFilteredList from "./useFilteredList";
+
+import ListItem from "./ListItem/ListItem";
 
 export default function List() {
-  const { list, filter } = useContext(TodosContext);
-  const { filteredList } = useFilteredList(list, filter);
+  const {
+    list: { list },
+  } = useContext(AppContext);
+  const {
+    filter: { filter },
+  } = useContext(ListFilterContext);
 
-  const getClassName = (item) => {
-    const classes = [`list__item`];
-    item.completed && classes.push(`list__item--completed`);
-    return classes.join(` `);
-  };
+  const { filteredList: listToRender } = useFilteredList(list, filter);
 
-  return filteredList.length ? (
+  return listToRender.length ? (
     <ul>
-      {filteredList.map((item) => (
-        <li key={item.id} className={getClassName(item)}>
-          {item.title}
-        </li>
+      {listToRender.map((item) => (
+        <ListItem key={item.id} item={item} />
       ))}
     </ul>
   ) : null;
