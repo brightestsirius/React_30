@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 
-import ListContext from "../../contexts/ListContext";
+import TodosContext from "../../contexts/TodosContext";
 
-export default function UL() {
-  const { state, handleItemDelete } = useContext(ListContext);
+export default function List() {
+  const { state, handleItemDelete } = useContext(TodosContext);
 
   return (
     <ul>
       {state.filteredList.map((item) => (
-        <li key={item.id} style={{ color: item.completed && state.color }}>
+        <li key={item.id} style={{ color: item.completed && `crimson` }}>
           {item.title}{" "}
           <button onClick={() => handleItemDelete(item.id)}>Delete</button>
         </li>

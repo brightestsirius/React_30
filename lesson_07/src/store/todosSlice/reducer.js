@@ -1,14 +1,13 @@
+import { SET_LIST, SET_FILTER, SET_FILETERD_LIST } from "./actions";
 import {
   TODOS_FILTER_ALL,
   TODOS_FILTER_COMPLETED,
   TODOS_FILTER_PROGRESS,
 } from "./constants";
-import { SET_LIST, SET_TODOS_FILTER, SET_FILETERED_LIST } from "./action";
 
-const initialArg = {
+const initialState = {
   list: [],
   filteredList: [],
-  color: `crimson`,
   filter: TODOS_FILTER_ALL,
 };
 
@@ -16,9 +15,9 @@ const reducer = (state, { type, payload }) => {
   switch (type) {
     case SET_LIST:
       return { ...state, list: payload };
-    case SET_TODOS_FILTER:
+    case SET_FILTER:
       return { ...state, filter: payload };
-    case SET_FILETERED_LIST:
+    case SET_FILETERD_LIST:
       return {
         ...state,
         filteredList: state.list.filter((item) => {
@@ -37,4 +36,4 @@ const reducer = (state, { type, payload }) => {
   }
 };
 
-export { reducer, initialArg };
+export { reducer, initialState };

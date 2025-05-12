@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function useColorPicker() {
-  const [color, setColor] = useState(`#673AB7`);
+  const [color, setColor] = useLocalStorage(`color`, `#673AB7`);
 
   const handleSetColor = (e) => setColor(e.target.value);
 

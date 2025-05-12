@@ -1,7 +1,8 @@
-import { COUNTER_INC, COUNTER_DEC, COUNTER_SET } from "./action";
+import { COUNTER_INC, COUNTER_DEC, COUNTER_SET } from "./actions";
 
-const initialArg = {
+const initialState = {
   counter: 0,
+  color: `red`,
 };
 
 const reducer = (state, { type, payload }) => {
@@ -17,4 +18,4 @@ const reducer = (state, { type, payload }) => {
   }
 };
 
-export { reducer, initialArg };
+export { reducer, initialState };

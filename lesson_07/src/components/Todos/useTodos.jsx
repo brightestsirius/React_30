@@ -1,17 +1,17 @@
 import React, { useReducer, useEffect } from "react";
 
 import service from "../../services/mockapi";
-
-import { reducer, initialArg } from "../../store/todos/reducer";
-import {
-  SET_LIST,
-  SET_TODOS_FILTER,
-  SET_FILETERED_LIST,
-} from "../../store/todos/action";
 import { actionCreator } from "../../store/store";
 
-export default function useList() {
-  const [state, dispatch] = useReducer(reducer, initialArg);
+import { reducer, initialState } from "../../store/todosSlice/reducer";
+import {
+  SET_LIST,
+  SET_FILTER,
+  SET_FILETERD_LIST,
+} from "../../store/todosSlice/actions";
+
+export default function useTodos() {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const getList = async () => {
     try {
@@ -31,15 +31,16 @@ export default function useList() {
     }
   };
 
-  const handleSetFilter = (e) =>
-    dispatch(actionCreator(SET_TODOS_FILTER, e.target.value));
+  const handleSetFilter = (e) => {
+    dispatch(actionCreator(SET_FILTER, e.target.value)); // {type: `SET_FILTER`, payload: e.target.value}
+  };
 
   useEffect(() => {
     getList();
   }, []);
 
   useEffect(() => {
-    dispatch(actionCreator(SET_FILETERED_LIST));
+    dispatch(actionCreator(SET_FILETERD_LIST));
   }, [state.list, state.filter]);
 
   return { state, handleItemDelete, handleSetFilter };
