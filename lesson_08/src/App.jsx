@@ -4,7 +4,6 @@ import { ThemeProvider } from "styled-components";
 import { styledComponentsTheme } from "./styles/styledComponentsTheme";
 
 import { ThemeProvider as ThemeProviderMUI } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import muiTheme from "./styles/muiTheme";
 
 import ButtonCSSModule from "./components/ButtonCSSModule/ButtonCSSModule.jsx";
@@ -66,7 +65,6 @@ export default function App() {
         </section>
 
         <ThemeProviderMUI theme={muiTheme}>
-          <CssBaseline />
           <section className="app-section">
             <h2 className="app-section__heading app-section__heading--mui">
               3. Material-UI (MUI)
