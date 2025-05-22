@@ -1,11 +1,9 @@
-import React from "react";
-
-import Header from "./../pages/Header/Header";
+import React from 'react'
 
 export default function ErrorRoute() {
   return (
     <div>
-      <h2>ErrorRoute</h2>
+        <h2>ErrorRoute</h2>
     </div>
-  );
+  )
 }

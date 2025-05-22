@@ -1,10 +1,11 @@
 import React from "react";
-import Navigation from "../../components/Navigation/Navigation";
+
+import Menu from "./../../components/Menu/Menu";
 
 export default function Header() {
   return (
     <header>
-      <Navigation />
+      <Menu />
     </header>
   );
 }

@@ -1,35 +1,35 @@
-import React, {lazy} from "react";
+import React from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Layout from "./pages/Layout/Layout";
-
-import UserRoute from './routes/UserRoute'
+import HomeRoute from "./routes/HomeRoute";
+import TodosRoute from "./routes/TodosRoute";
+import TodoRoute from './routes/TodoRoute'
 import ErrorRoute from "./routes/ErrorRoute";
 
-const HomeRouteLazy = lazy(() => import("./routes/HomeRoute"));
-const UsersRouteLazy = lazy(() => import("./routes/UsersRoute"));
+import Layout from "./pages/Layout";
 
-import service from './services/mockapi'
+import service from "./services/mockapi";
 
 let router = createBrowserRouter([
   {
+    path: "/",
     element: <Layout />,
     errorElement: <ErrorRoute />,
     children: [
       {
-        index: true,
-        element: <HomeRouteLazy />,
+        path: "/",
+        element: <HomeRoute />,
       },
       {
-        path: "/users",
-        element: <UsersRouteLazy />,
-        loader: async () => service.get(`users`)
+        path: "/todos",
+        element: <TodosRoute />,
+        loader: () => service.get(`todos`)
       },
       {
-        path: "/users/:id",
-        element: <UserRoute />,
-        loader: async ({params}) => service.get(`users`, params.id)
+        path: "/todos/:id",
+        element: <TodoRoute />,
+        loader: ({params}) => service.get(`todos`, params.id)
       },
     ],
   },
