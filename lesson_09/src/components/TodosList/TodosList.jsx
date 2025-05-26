@@ -1,48 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData, Link, useSearchParams } from "react-router-dom";
-import styles from "./TodosList.module.sass";
+import styles from './TodosList.module.sass'
 
-import {
-  TODOS_FILTER_COMPLETED,
-  TODOS_FILTER_NON_COMPLETED,
-  TODOS_FILTER_ALL,
-} from "./../../constants/todos";
+import { TODO_ASC, TODO_DESC } from "../../constants/todos";
 
 export default function TodosList() {
   const todos = useLoaderData();
+  const [sortedTodos, setSortedTodos] = useState([]);
+
   const [searchParams] = useSearchParams();
-  const filter = searchParams.get(`filter`);
+  const sort = searchParams.get(`sort`);
 
-  const [filteredTodos, setFilteredTodos] = useState([]);
+  useEffect(() => {
+    switch (sort) {
+      case TODO_ASC:
+        setSortedTodos(todos.sort((a, b) => a.completed - b.completed));
+        break;
+      case TODO_DESC:
+        setSortedTodos(todos.sort((a, b) => b.completed - a.completed));
+        break;
+      default:
+        setSortedTodos(todos);
+    }
+  }, [sort, todos]);
 
-  const getClassName = (item) => {
-    const classes = [styles.item];
+  const getItemClassName = item => {
+    const classes = [styles[`item`]];
     item.completed && classes.push(styles[`item--completed`]);
 
     return classes.join(` `);
-  };
+  }
 
-  useEffect(() => {
-    switch (filter) {
-      case TODOS_FILTER_COMPLETED:
-        setFilteredTodos(todos.sort((a,b) => a.completed - b.completed));
-        break;
-      case TODOS_FILTER_NON_COMPLETED:
-        setFilteredTodos(todos.sort((a,b) => b.completed - a.completed));
-        break;
-      case TODOS_FILTER_ALL:
-      default:
-        setFilteredTodos(todos);
-    }
-  }, [filter, filteredTodos]);
-
-  return todos.length ? (
+  return sortedTodos.length ? (
     <ul>
-      {filteredTodos.map((item) => (
+      {sortedTodos.map((item) => (
         <li key={item.id}>
-          <Link to={`/todos/${item.id}`} className={getClassName(item)}>
-            {item.title}
-          </Link>
+          <Link to={`/todos/${item.id}`} className={getItemClassName(item)}>{item.title}</Link>
         </li>
       ))}
     </ul>

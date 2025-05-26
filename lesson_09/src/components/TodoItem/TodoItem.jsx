@@ -3,9 +3,8 @@ import { useParams } from "react-router-dom";
 
 import service from "../../services/mockapi";
 
-export default function TodoDetails() {
+export default function TodoItem() {
   const { id } = useParams();
-
   const [todo, setTodo] = useState({});
 
   const getTodo = async () => {
@@ -18,8 +17,8 @@ export default function TodoDetails() {
   }, []);
 
   return (
-    <div>
-      <h2>Todo Details</h2>
+    <div style={{border: `1px solid black`}}>
+      <h3>Todo Item Component</h3>
       {Object.keys(todo).length ? <p>Title: {todo.title}</p> : null}
     </div>
   );

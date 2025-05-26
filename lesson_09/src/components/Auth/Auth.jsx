@@ -5,11 +5,9 @@ import AuthContext from "../../contexts/AuthContext";
 export default function Auth() {
   const { isAuth, setIsAuth } = useContext(AuthContext);
 
-  const handleSetAuth = () => setIsAuth((prevState) => !prevState);
+  const handleAuth = () => setIsAuth((prevState) => !prevState);
 
   return (
-    <button onClick={handleSetAuth}>
-      {isAuth ? `Log in 🟢` : `Log out 🔴`}
-    </button>
+    <button onClick={handleAuth}>{isAuth ? `🟢 Log in` : `🔴 Log out`}</button>
   );
 }

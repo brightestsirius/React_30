@@ -2,26 +2,20 @@ import React, { useState, lazy, Suspense } from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import HomeRoute from "./routes/HomeRoute";
-import TodosRoute from "./routes/TodosRoute";
-import TodoRoute from "./routes/TodoRoute";
-import ErrorRoute from "./routes/ErrorRoute";
-
-import LoaderFallback from "./components/LoaderFallback/LoaderFallback";
-
 import Layout from "./pages/Layout";
+import Loader from "./components/Loader/Loader";
 
 import service from "./services/mockapi";
 
-import TodosFilter from "./components/TodosFilter/TodosFilter";
-
 import AuthContext from "./contexts/AuthContext";
+
 import AuthGuard from "./HOC/AuthGuard";
 
 const HomeRouteLazy = lazy(() => import("./routes/HomeRoute"));
 const TodosRouteLazy = lazy(() => import("./routes/TodosRoute"));
 const TodoRouteLazy = lazy(() => import("./routes/TodoRoute"));
 const ErrorRouteLazy = lazy(() => import("./routes/ErrorRoute"));
+const TodosSortLazy = lazy(() => import("./components/TodosSort/TodosSort"));
 
 let router = createBrowserRouter([
   {
@@ -31,17 +25,13 @@ let router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <Suspense fallback={<LoaderFallback />}>
-            <HomeRouteLazy />
-          </Suspense>
-        ),
+        element: <HomeRouteLazy />,
         children: [
           {
-            path: `/filter`,
+            path: `/dashboard`,
             element: (
               <AuthGuard>
-                  <TodosFilter />
+                <TodosSortLazy />
               </AuthGuard>
             ),
           },
@@ -49,21 +39,13 @@ let router = createBrowserRouter([
       },
       {
         path: "/todos",
-        element: (
-          <Suspense fallback={<LoaderFallback />}>
-            <TodosRouteLazy />
-          </Suspense>
-        ),
+        element: <TodosRouteLazy />,
         loader: () => service.get(`todos`),
-        HydrateFallback: LoaderFallback,
+        HydrateFallback: Loader,
       },
       {
         path: "/todos/:id",
-        element: (
-          <Suspense fallback={<LoaderFallback />}>
-            <TodoRouteLazy />
-          </Suspense>
-        ),
+        element: <TodoRouteLazy />,
       },
     ],
   },

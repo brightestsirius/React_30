@@ -1,15 +1,17 @@
 import React from "react";
 
-import TodoDetails from "./../components/TodoDetails/TodoDetails";
-import NavigationBtn from './../components/NavigationBtn/NavigationBtn'
+import TodoItem from './../components/TodoItem/TodoItem'
+import NavigateBtn from './../components/NavigateBtn/NavigateBtn'
 
 export default function TodoRoute() {
   return (
     <div>
       <h2>TodoRoute</h2>
-      <TodoDetails />
-      <NavigationBtn title={`Back to all Todos`} path={`/todos`} />
-      <NavigationBtn title={`Back`} />
+
+      <TodoItem />
+
+      <NavigateBtn title={`Back to Todos`} path={`/todos`} />
+      <NavigateBtn title={`Back to Dashboard`} path={`/dashboard`} />
     </div>
   );
 }
