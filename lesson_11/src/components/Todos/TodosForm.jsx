@@ -2,51 +2,75 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z as zod } from "zod";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-import Input from "./../Input/Input";
+import TodosFormInput from "./TodosFormInput";
+
+import service from "./../../services/mockapi";
 
 export default function TodosForm() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (item) => {
+      return service.post(`todos`, item);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      reset();
+    },
+  });
+
   const schema = zod
     .object({
-      email: zod.string().email(`Пароль не валідний`),
-      password: zod.string().min(5, `Мінімальні к-сть символів 5`),
+      title: zod.string().min(1, `Заголовок має містити не менше 1 символу`),
+      completed: zod.boolean().optional(),
     })
     .required();
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { isValid, errors },
+    reset,
   } = useForm({
     defaultValues: {
-      email: `sheva@gmail.com`,
-      password: ``,
+      title: "New title",
+      completed: false,
     },
     mode: `onBlur`,
     resolver: zodResolver(schema),
   });
 
   const onSubmit = (data) => {
-    console.log(data);
-    reset();
+    mutation.mutate(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="email"
-        control={control}
-        render={({ field }) => <Input {...field} type="email" />}
-      ></Controller>
-      {errors.email && <p>{errors.email.message}</p>}
+      <div>
+        <label htmlFor="title">Todo title:</label>
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => (
+            <TodosFormInput {...field} type="text" id="title" />
+          )}
+        />
+        {errors.title && <p>{errors.title.message}</p>}
+      </div>
 
-      <Controller
-        name="password"
-        control={control}
-        render={({ field }) => <Input {...field} type="password" />}
-      ></Controller>
-      {errors.password && <p>{errors.password.message}</p>}
+      <div>
+        <label htmlFor="completed">Todo completed:</label>
+        <Controller
+          name="completed"
+          control={control}
+          render={({ field }) => (
+            <TodosFormInput {...field} type="checkbox" id="completed" />
+          )}
+        />
+        {errors.completed && <p>{errors.completed.message}</p>}
+      </div>
 
       <button disabled={!isValid}>Submit</button>
     </form>
