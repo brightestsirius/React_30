@@ -7,4 +7,4 @@ const useBearsStore = create((set) => ({
   updateBears: (newBears) => set({ bears: newBears }),
 }));
 
-export default useBearsStore;
+export { useBearsStore };

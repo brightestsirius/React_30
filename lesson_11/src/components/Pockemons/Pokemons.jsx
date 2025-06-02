@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import usePokemonsStore from "./../../store/features/pokemons";
+import { usePokemonsStore } from "../../store/features/pokemons";
 
 export default function Pokemons() {
-  const { pokemons, loading, error, fetchPokemons, changePokemon } =
+  const { pokemons, isLoading, error, fetchPokemons, changePokemonStatus } =
     usePokemonsStore();
 
   useEffect(() => {
     fetchPokemons();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error {error}</p>;
 
   return pokemons.length ? (
     <ul>
@@ -19,7 +19,7 @@ export default function Pokemons() {
         <li
           key={item.id}
           style={{ color: item.status && `crimson` }}
-          onClick={() => changePokemon(item.id, { status: !item.status })}
+          onClick={() => changePokemonStatus(item)}
         >
           {item.name}
         </li>
