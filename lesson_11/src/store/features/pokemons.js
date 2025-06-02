@@ -9,18 +9,19 @@ const usePokemonsStore = create((set, get) => ({
 
   fetchPokemons: async () => {
     set({ isLoading: true });
+
     try {
       const response = await service.get(`pokemons`);
-      set({ pokemons: response, isLoading: false });
+      set({ isLoading: false, pokemons: response });
     } catch (err) {
       set({ isLoading: false, error: err.message });
     }
   },
-
-  changePokemonStatus: async (item) => {
+  updatePokemonStatus: async (item) => {
     set({ isLoading: true });
+
     try {
-      await service.put(`pokemons`, item.id, { status: !item.status });
+      await service.put(`pokemons`, item.id, {status: !item.status});
       get().fetchPokemons();
     } catch (err) {
       set({ isLoading: false, error: err.message });
@@ -28,4 +29,4 @@ const usePokemonsStore = create((set, get) => ({
   },
 }));
 
-export { usePokemonsStore };
+export default usePokemonsStore;

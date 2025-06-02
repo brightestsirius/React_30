@@ -7,7 +7,8 @@ import TodosForm from "./TodosForm";
 
 export default function Todos() {
   const queryClient = useQueryClient();
-  const { data, isError, isLoading, error } = useQuery({
+
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["todos"],
     queryFn: () => service.get(`todos`),
   });
@@ -17,6 +18,7 @@ export default function Todos() {
       return service.put(`todos`, item.id, { completed: !item.completed });
     },
     onSuccess: () => {
+      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });

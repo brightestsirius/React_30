@@ -1,13 +1,15 @@
 import React from "react";
-import { useBearsStore } from "./../../store/features/bears";
+import useBearsStore from "./../../store/features/bears";
 
 export default function Bears() {
   const bears = useBearsStore((state) => state.bears);
-  const { increasePopulation, removeAllBears, updateBears } = useBearsStore();
+  const increasePopulation = useBearsStore((state) => state.increasePopulation);
+  const removeAllBears = useBearsStore((state) => state.removeAllBears);
+  const updateBears = useBearsStore((state) => state.updateBears);
 
   return (
     <div>
-      <span>Bears: {bears}</span>{" "}
+      <p>Bears: {bears}</p>{" "}
       <button onClick={increasePopulation}>increasePopulation</button>{" "}
       <button onClick={removeAllBears}>removeAllBears</button>{" "}
       <input type="text" onBlur={(e) => updateBears(+e.target.value)} />
