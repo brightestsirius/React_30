@@ -3,6 +3,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import service from "../../services/mockapi";
 
+import TodosForm from "./TodosForm";
+
 export default function Todos() {
   const queryClient = useQueryClient();
   const { data, isError, isLoading, error } = useQuery({
@@ -22,17 +24,22 @@ export default function Todos() {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
 
-  return data.length ? (
-    <ul>
-      {data.map((item) => (
-        <li
-          key={item.id}
-          style={{ color: item.completed && `crimson` }}
-          onClick={() => mutation.mutate(item)}
-        >
-          {item.title}
-        </li>
-      ))}
-    </ul>
-  ) : null;
+  return (
+    <>
+      <TodosForm />
+      {data.length ? (
+        <ul>
+          {data.map((item) => (
+            <li
+              key={item.id}
+              style={{ color: item.completed && `crimson` }}
+              onClick={() => mutation.mutate(item)}
+            >
+              {item.title}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </>
+  );
 }
